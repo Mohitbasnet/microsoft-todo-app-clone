@@ -1,0 +1,91 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block title %} Tasks {% endblock title %}
+
+{% block css %}
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    background-image: url('{% static "images/bg.jpeg" %}');
+    background-repeat: no-repeat; 
+    background-size: cover;
+    }
+
+    input::placeholder {
+        color: white !important;
+    }
+
+    input {
+        color:white !important;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .task_class::-webkit-scrollbar {
+        display: none;
+      }
+      
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .task_class {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+</style>
+{% endblock %}
+{% block for_lists %}
+    <ul class="collapse hide nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+        {% for list in lists %}
+        <li class="w-100">
+            <a href="#" class="nav-link px-0" style="color: white !important;"><i class="fs-4 bi-list"></i> <span class="d-none d-sm-inline">{{list.title}}</span> </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block content %}
+<div class="col py-3 px-3">
+    <div class="d-flex flex-column align-items-center">
+        <div class="col-md-12 col-lg-12 mb-1 align-items-center">
+            <h1 class="px-1">
+                <i class="fs-10 bi-house"></i>
+                <span class="ms-1 d-none d-sm-inline">Tasks</span>
+            </h1>
+            <p class="text-muted mx-1">{% now "jS F Y" %}</p>
+        </div>
+
+        <!-- Tasks -->
+        <div class="col-md-12 col-lg-12 task_class" style="height: 500px; overflow-y: scroll; overflow-x: hidden;">
+            {% block tasks %}
+            {% for task in task_list %}
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body" style="padding: 6px 10px;">
+                    <span style="width: 100px; overflow: hidden;">{{ task.title }}</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+            {% endblock %}
+        </div>
+
+        <!-- Add task -->
+        <div class="col-md-12 col-lg-12 mt-3">
+            <div class="card bg-dark text-white">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <span style="display: flex;">
+                            <input type="text" name="task" class="form-control bg-dark" placeholder="Add a task">
+                            <button type = "submit" class="btn btn-primary" style="width: 200px;"><i class="fa fa-plus"></i> Add</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
